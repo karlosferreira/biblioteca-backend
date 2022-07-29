@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routes = void 0;
+var express_1 = require("express");
+var ObrasController_1 = require("../app/controllers/ObrasController");
+var routes = (0, express_1.Router)();
+exports.routes = routes;
+routes.get("/", ObrasController_1.obrasController.home);
+routes.post("/obras/", ObrasController_1.obrasController.createObra);
+routes.get("/obra/:id", ObrasController_1.obrasController.getObra);
+routes.get("/obras/", ObrasController_1.obrasController.getAllObras);
+routes.put("/obra/", ObrasController_1.obrasController.updateObra);
+routes.delete("/obra/:id", ObrasController_1.obrasController.deleteObra);

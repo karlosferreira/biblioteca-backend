@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
 
 class ObrasController{
+    public home(req:Request, res:Response) {
+        return res.json({
+            response: 'Hello World'
+        });
+    }
+
     public createObra(req:Request, res:Response) {
         const pathDescription = '/obras => A rota deverá receber titulo, editora, foto, e autores dentro do corpo da requisição. Ao cadastrar um novo projeto, ele deverá ser armazenado dentro de um objeto no seguinte formato: { id: 1, titulo: "Harry Potter", editora: "Rocco",foto: "https://i.imgur.com/UH3IPXw.jpg", autores: ["JK Rowling", "..."]};';
         

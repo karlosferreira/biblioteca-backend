@@ -3,14 +3,16 @@ import { obrasController } from "../app/controllers/ObrasController";
 
 const routes: Router = Router()
 
-routes.post("/obras", obrasController.createObra);
+routes.get("/", obrasController.home);
 
-routes.get("/obras/:id", obrasController.getObra);
+routes.post("/obras/", obrasController.createObra);
+
+routes.get("/obra/:id", obrasController.getObra);
 
 routes.get("/obras/", obrasController.getAllObras);
 
-routes.put("/", obrasController.updateObra);
+routes.put("/obra/", obrasController.updateObra);
 
-routes.delete("/", obrasController.deleteObra);
+routes.delete("/obra/:id", obrasController.deleteObra);
 
 export { routes };

@@ -9,9 +9,6 @@ router.get("/", servicesController.status);
 
 // Books Controller
 router.post("/obras", booksController.createBook);
-// router.get("/obras/", booksController.getAllBooks);
-// router.get("/obras/:id", booksController.getBook);
-// router.get("/obras/:id", booksController.updateBook);
-// router.get("/obras/:id", booksController.deleteBook);
+router.delete("/obra/:id", booksController.deleteBook);
 
 export { router };

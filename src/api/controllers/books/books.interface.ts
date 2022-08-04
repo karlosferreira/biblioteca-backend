@@ -4,4 +4,3 @@ export interface BookInterface {
     authors: String,
     imageCover?: String
 }
-  

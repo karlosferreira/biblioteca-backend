@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let connected: any;
 
-export const connect = () => {
+export const connect = async () => {
     if (connected) {
         return Promise.resolve();
     }

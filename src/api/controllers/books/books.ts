@@ -1,35 +1,77 @@
-import { Request, Response } from "express";
-import { connect } from "../../../services/mongo";
+import { connect, disconnect } from "../../../services/mongo";
 import { Book } from "../../models/Book";
-import { TypedRequestBody, TypedResponse } from "../../../services/interface";
-import { BookInterface } from "../../controllers/books/books.interface";
+import { IBody, IResponse } from "../../../utils/interface";
+import { BookInterface, DeletedBook } from "../../controllers/books/books.interface";
 
-// Tipar a constante como uma Promise foi correto aqui? 
+
 export const createBook = async (
-  req: TypedRequestBody<BookInterface>,
-  res: TypedResponse<BookInterface>
-): Promise<TypedResponse<BookInterface>> => {
+  req: IBody<BookInterface>,
+  res: IResponse<BookInterface>
+) => {
+
   await connect();
 
   const book = await Book.create(req.body).catch((error) => {
     throw new Error(error);
   });
 
-  return res.status(200).json(book.toJSON());
+  await disconnect();
+
+  return res.status(200).json(book);
+
 };
 
-export const deleteBook = async (req: Request, res: Response) => {
+// export const getAllBooks = async (res: Express.Response) => {
+
+//   await connect();
+
+//   const books: Array<IAllBooks> = await Book.find({}).catch((error) => {
+//     throw new Error(error);
+//   });
+
+//   return res.status(200).json(books);
+// };
+
+// export const updateBook = async (
+//   req: IBody<BookInterface>,
+//   res: IResponse<BookInterface>
+// ) => {
+
+//   await connect();
+
+//   const book = await Book.findOneAndUpdate({_id: req.params._id}, {
+//     title: req.body.title,
+//     publisher: req.body.publisher,
+//     authors: req.body.authors,
+//     imageCover: req.body.imageCover
+//   },{ overwrite: true }).catch((error) => {
+//     throw new Error(error);
+//   });
+
+//   return res.status(200).json(book);
+// };
+
+export const deleteBook = async (
+  req: IBody<{ _id: String }>, 
+  res: IResponse<DeletedBook>
+) => {
+  
+  const _id = req.params.id;
+
   await connect();
 
   const book = await Book.findOneAndDelete({
-    _id: req.params.id,
+    _id,
   }).catch((error) => {
     throw new Error(error);
   });
 
+  await disconnect();
+
   if (!book) {
-    return res.json({
-      Error: `The book ${req.params.id} not found or previous deleted`,
+    return res.status(404).json({
+      deleted: false,
+      error: `The book ${_id} not found or previous deleted`,
     });
   }
 

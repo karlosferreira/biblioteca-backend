@@ -4,3 +4,10 @@ export interface BookInterface {
     authors: String,
     imageCover?: String
 }
+
+export type IAllBooks = Omit<BookInterface, "__v" | "_id" | "createdAt" | "updatedAt">;
+
+export interface DeletedBook {
+    deleted: Boolean,
+    error?: String
+}

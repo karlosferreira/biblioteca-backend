@@ -7,7 +7,7 @@ export const connect = async () => {
         return Promise.resolve();
     }
 
-    return mongoose.connect('mongodb://localhost:27017/library', { 
+    return mongoose.connect('mongodb+srv://library:vercel@library.yopr3zi.mongodb.net/?retryWrites=true&w=majority', { 
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(db => {

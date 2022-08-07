@@ -32,7 +32,7 @@ export const getAllBooks = async (
 
 export const getBookById = async (
   req: IBody<BookInterface>, 
-  res: ) => {
+  res: IResponse<BookInterface>) => {
   
   await connect();
   const book = await Book.findById({ _id: req.params.id });

@@ -1,8 +1,7 @@
 import { connect, disconnect } from "../../../services/mongo";
 import { Book } from "../../models/Book";
 import { IBody, IResponse } from "../../../utils/interface";
-import { BookInterface, DeletedBook } from "../../controllers/books/books.interface";
-
+import { BookInterface, DeletedBook, IAllBooks } from "../../controllers/books/books.interface";
 
 export const createBook = async (
   req: IBody<BookInterface>,
@@ -18,38 +17,50 @@ export const createBook = async (
   await disconnect();
 
   return res.status(200).json(book);
-
 };
 
-// export const getAllBooks = async (res: Express.Response) => {
+export const getAllBooks = async (
+  req: any, 
+  res: IResponse<BookInterface>) => {
 
-//   await connect();
+  await connect();
+  const books: BookInterface[] = await Book.find({});
+  await disconnect();
+  
+  return res.send(books);
+};
 
-//   const books: Array<IAllBooks> = await Book.find({}).catch((error) => {
-//     throw new Error(error);
-//   });
+export const getBookById = async (
+  req: IBody<BookInterface>, 
+  res: ) => {
+  
+  await connect();
+  const book = await Book.findById({ _id: req.params.id });
+  await disconnect();
+  
+  return res.send(book);
+};
 
-//   return res.status(200).json(books);
-// };
+export const updateBook = async (
+  req: IBody<BookInterface>,
+  res: IResponse<BookInterface>
+) => {
 
-// export const updateBook = async (
-//   req: IBody<BookInterface>,
-//   res: IResponse<BookInterface>
-// ) => {
+  await connect();
 
-//   await connect();
+  await Book.findOneAndUpdate({ _id: req.params.id },{
+    title: req.body.title,
+    publisher: req.body.publisher,
+    authors: req.body.authors,
+    imageCover: req.body.imageCover ?? "",
+  });
 
-//   const book = await Book.findOneAndUpdate({_id: req.params._id}, {
-//     title: req.body.title,
-//     publisher: req.body.publisher,
-//     authors: req.body.authors,
-//     imageCover: req.body.imageCover
-//   },{ overwrite: true }).catch((error) => {
-//     throw new Error(error);
-//   });
+  const response = await Book.findById({ _id: req.params.id }); 
 
-//   return res.status(200).json(book);
-// };
+  await disconnect();
+
+  return res.status(200).send(response);
+};
 
 export const deleteBook = async (
   req: IBody<{ _id: String }>, 
